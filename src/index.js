@@ -24,17 +24,9 @@ function Square(props) {
 }
 
 class Board extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      squares: Array(9).fill(null),
-      xIsNext: true, //will flip at each turn to determine which player goes next
-    };
-  }
-
   handleClick(i) {
     // use slice() to create a copy of the squares array to modify instead of modifying the existing one.
-    const squares = this.state.squares.slice(); 
+    const squares = this.state.squares.slice();
 
     // ignoring a click if someone has won the game or if a Square is already filled
     if (calculateWinner(squares) || squares[i]) {
@@ -52,8 +44,8 @@ class Board extends React.Component {
   renderSquare(i) {
     return (
       <Square
-        value={this.state.squares[i]}
-        onClick={() => this.handleClick(i)}
+        value={this.props.squares[i]}
+        onClick={() => this.props.onClick(i)}
       />
     );
   }
@@ -100,6 +92,7 @@ class Game extends React.Component {
       xIsNext: true,
     };
   }
+
   render() {
     return (
       <div className="game">
