@@ -33,8 +33,16 @@ class Board extends React.Component {
   }
 
   handleClick(i) {
-    const squares = this.state.squares.slice(); // use slice() to create a copy of the squares array to modify instead of modifying the existing one.
-    squares[i] = this.state.xIsNext ? 'X' : 'O'; // changing input based on xIsNext value
+    // use slice() to create a copy of the squares array to modify instead of modifying the existing one.
+    const squares = this.state.squares.slice(); 
+
+    // ignoring a click if someone has won the game or if a Square is already filled
+    if (calculateWinner(squares) || squares[i]) {
+      return;
+    }
+
+    // changing input based on xIsNext value
+    squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
       squares: squares,
       xIsNext: !this.state.xIsNext,
@@ -51,7 +59,13 @@ class Board extends React.Component {
   }
 
   render() {
-    const status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O'); // Displays which player has the next turn on top of page
+    const winner = calculateWinner(this.state.squares);
+    let status;
+    if (winner) {
+      status = 'Winner: ' + winner;
+    } else {
+      status = 'Next player: ' + (this.state.xIsNext ? 'X' : 'O');
+    }
 
     return (
       <div>
